@@ -96,6 +96,30 @@ function createPaginationButtons (list) {
    });
 }
 
+function createSearchBar () {
+   const h2 = document.querySelector('h2');
+ 
+   const searchBarHTML = `<label for="search" class="student-search">
+   <input id="search" placeholder="Search by name...">
+   <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+   </label>`;
+
+   h2.insertAdjacentHTML('afterend',searchBarHTML);
+}
+
+function performSearch(searchInput, data) {
+
+}
+
 //Calls the functions to display the first set of students when the page first loads
 createStudentList(data,1);
 createPaginationButtons(data);
+createSearchBar();
+
+//Set up eventListener for search bar
+const searchBox = document.getElementById("search");
+
+searchBox.addEventListener('keyup', ()=> {
+   console.log('heeeeeya');
+
+});
