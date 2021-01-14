@@ -107,8 +107,23 @@ function createSearchBar () {
    h2.insertAdjacentHTML('afterend',searchBarHTML);
 }
 
-function performSearch(searchInput, data) {
+function performSearch(searchInput, studentInfo) {
+   // const charactersEntered = searchInput.length;
+   const searchTerm = searchInput.toLowerCase();
+   let searchResults = [];
 
+   for (let i=0;i<studentInfo.length; i++) {
+      const firstName = studentInfo[i].name.first;
+      const lastName = studentInfo[i].name.last;
+      const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
+   
+      if (searchInput.length !== 0 && fullName.includes(searchTerm)) {
+         searchResults.push(studentInfo[i]);
+      };
+   };
+
+   createStudentList(searchResults,1);
+   createPaginationButtons(searchResults);
 }
 
 //Calls the functions to display the first set of students when the page first loads
