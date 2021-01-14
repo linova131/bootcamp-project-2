@@ -55,8 +55,7 @@ function createStudentList (list, page) {
          joinedDate.className = 'date';
          joinedDate.textContent = `Joined ${studentData[i].registered.date}`;
          joinedDiv.appendChild(joinedDate);
-      };
-      
+      };  
    };
 }
 
