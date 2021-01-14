@@ -1,0 +1,46 @@
+create function showPage
+    pass in 'list' which is the student data passed to the function
+    pass in 'page' which represents the page number passed to the function
+
+    set startIndex to be index of first item to be displayed ((page*items per page)-items per page)
+    set endIndex to be the index of the last item to be displayed (page*items per page)
+
+    set list to select the ul with className student-list
+    set list.innerHTML to empty string
+
+    for each item whose index is >= startIndex and < endIndex  
+        create DOM elements to display the information for each student (example in instructions)
+    endfor
+
+    add elements that have been created to the ul with classname student-list
+
+closefunction showPage
+
+create function pageButtons
+    pass in 'list' which is the student data passed to the function
+    set numberOfButtons to a calculation of list.length/9
+
+    set linkList to the ul with class of link-list
+    set linkList.innerHTML to ""
+
+    for each page that we need to create
+        create DOM elements to display the pagination buttons
+    endfor
+
+    add elements created to the linkList
+    
+    set firstButton to first pagination button we just created
+    get firtButton a class name of active
+
+    add eventListener for clicks on the linkList items
+        conditional ensuring only pagination button clicks cause effects
+        remove active className from all buttons
+        set className of current button to active
+        call showPage using parameters of list and page number
+
+
+closefunction pageButtons
+
+FOR PAGINATION buttons//something strange happens when selecting last button, look at #ofbuttons calculation
+possibly need another conditional in the for loop that creates LI student items
+checks for undefined in some key before going along and generating the item, otherwise, breaks the loop? 
