@@ -3,15 +3,26 @@ Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
 
+//pageSize determines how many students display on each page
+let pageSize = 9;
+
+
+//createStudentList() generates a number of list items using the student information stored in data.js.
+//The number of list items generated depends on both the pageSize and the number of students in data[]
+// @param list -- the array of student data, here stored in data.js file
+// @param page -- which group of students should be displayed e.g. on page 2, students 10-18 should appear
+
 function createStudentList (list, page) {
    let studentData = list;
-   let pageSize = 9; //possibly set outside, into global scope
-   const startIndex = (page*9)-9;
-   const endIndex = (page*9);
+   const startIndex = (page*pageSize)-pageSize;
+   const endIndex = (page*pageSize);
    const studentList = document.querySelector('.student-list');
    studentList.innerHTML = "";
-
+   
+   //This for loop dynamically generates the student list items
    for (i = startIndex; i>=startIndex && i<endIndex;i++) {
+      //This if statement ensures that list items are only generated when student data exists.
+      //Prevents function for attempting to fill the pageSize when the number of students does not allow for the full pageSize
       if (data[i]) {
          let li = document.createElement('li');
          li.className = 'student-item cf';
@@ -49,11 +60,15 @@ function createStudentList (list, page) {
    };
 }
 
+//createPaginationButtons() determines how many pagination buttons are required as per the amount of student data available and dynammically creates them
+// @param list -- the array of student data
+
 function createPaginationButtons (list) {
-   let numberOfButtons = list.length/9;
+   let numberOfButtons = list.length/pageSize;
    let linkList = document.querySelector('.link-list');
    linkList.innerHTML = "";
-
+   
+   //dynamically creates the number of pagination buttons required per # of students and pageSize
    for (i = 0; i < numberOfButtons; i++) {
       let li = document.createElement('li');
       linkList.appendChild(li);
@@ -64,10 +79,12 @@ function createPaginationButtons (list) {
       li.appendChild(button);
    }; 
 
+   //This allows the first page to be displayed when the page first loads
    let firstButton = linkList.firstElementChild.firstElementChild;
    firstButton.className = "active";
    let allButtons = document.querySelectorAll('button');
 
+   //This event listener waits for a pagination button to be clicked and then calls createStudentList to change which students appear on the page
    linkList.addEventListener('click', (e) => {
       if (e.target.type === "button") {
          for (let i = 0; i < numberOfButtons; i++) {
@@ -77,11 +94,9 @@ function createPaginationButtons (list) {
             createStudentList(list,page);
          };
       };
-
    });
-
-   return console.log(firstButton.innerHTML);
 }
 
+//Calls the functions to display the first set of students when the page first loads
 createStudentList(data,1);
 createPaginationButtons(data);
