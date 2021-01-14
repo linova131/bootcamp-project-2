@@ -23,7 +23,7 @@ function createStudentList (list, page) {
    for (i = startIndex; i>=startIndex && i<endIndex;i++) {
       //This if statement ensures that list items are only generated when student data exists.
       //Prevents function for attempting to fill the pageSize when the number of students does not allow for the full pageSize
-      if (data[i]) {
+      if (list[i]) {
          let li = document.createElement('li');
          li.className = 'student-item cf';
          studentList.appendChild(li);
@@ -67,33 +67,35 @@ function createPaginationButtons (list) {
    let linkList = document.querySelector('.link-list');
    linkList.innerHTML = "";
    
-   //dynamically creates the number of pagination buttons required per # of students and pageSize
-   for (i = 0; i < numberOfButtons; i++) {
-      let li = document.createElement('li');
-      linkList.appendChild(li);
-      
-      let button = document.createElement('button');
-      button.type = "button";
-      button.textContent = `${i+1}`;
-      li.appendChild(button);
-   }; 
+   if(linkList.length > 0){
+      //dynamically creates the number of pagination buttons required per # of students and pageSize
+      for (i = 0; i < numberOfButtons; i++) {
+         let li = document.createElement('li');
+         linkList.appendChild(li);
+         
+         let button = document.createElement('button');
+         button.type = "button";
+         button.textContent = `${i+1}`;
+         li.appendChild(button);
+      }; 
 
-   //This allows the first page to be displayed when the page first loads
-   let firstButton = linkList.firstElementChild.firstElementChild;
-   firstButton.className = "active";
-   let allButtons = document.querySelectorAll('button');
+      //This allows the first page to be displayed when the page first loads
+      let firstButton = linkList.firstElementChild.firstElementChild;
+      firstButton.className = "active";
+      let allButtons = document.querySelectorAll('button');
 
-   //This event listener waits for a pagination button to be clicked and then calls createStudentList to change which students appear on the page
-   linkList.addEventListener('click', (e) => {
-      if (e.target.type === "button") {
-         for (let i = 0; i < numberOfButtons; i++) {
-            allButtons[i].className = "";
-            e.target.className = "active";
-            let page = e.target.textContent;
-            createStudentList(list,page);
+      //This event listener waits for a pagination button to be clicked and then calls createStudentList to change which students appear on the page
+      linkList.addEventListener('click', (e) => {
+         if (e.target.type === "button") {
+            for (let i = 0; i < numberOfButtons; i++) {
+               allButtons[i].className = "";
+               e.target.className = "active";
+               let page = e.target.textContent;
+               createStudentList(list,page);
+            };
          };
-      };
-   });
+      });
+   };
 }
 
 function createSearchBar () {
@@ -108,7 +110,6 @@ function createSearchBar () {
 }
 
 function performSearch(searchInput, studentInfo) {
-   // const charactersEntered = searchInput.length;
    const searchTerm = searchInput.toLowerCase();
    let searchResults = [];
 
@@ -124,6 +125,13 @@ function performSearch(searchInput, studentInfo) {
 
    createStudentList(searchResults,1);
    createPaginationButtons(searchResults);
+
+   if (searchResults.length === 0){
+      let body = document.querySelector('body');
+      let p = document.createElement('p');
+      p.textContent = 'Sorry, no results!';
+      body.appendChild(p);
+   };
 }
 
 //Calls the functions to display the first set of students when the page first loads
@@ -135,6 +143,5 @@ createSearchBar();
 const searchBox = document.getElementById("search");
 
 searchBox.addEventListener('keyup', ()=> {
-   console.log('heeeeeya');
-
+      performSearch(searchBox.value,data);
 });
