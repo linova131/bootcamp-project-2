@@ -134,9 +134,14 @@ function performSearch(searchInput, studentInfo) {
       };
    };
    
-   createStudentList(searchResults,1);
-   createPaginationButtons(searchResults);
-   
+   if (searchInput.length > 0){
+      createStudentList(searchResults,1);
+      createPaginationButtons(searchResults);
+   } else if (searchInput.length === 0){
+      createStudentList(data, 1);
+      createPaginationButtons(data);   
+   };
+
    if (searchResults.length === 0) {
       p.textContent = 'Sorry, no results!';
    };
