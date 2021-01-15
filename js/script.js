@@ -6,6 +6,10 @@ FSJS Project 2 - Data Pagination and Filtering
 //pageSize determines how many students display on each page
 let pageSize = 9;
 
+//creates a paragraph element to display search errors later in the code
+const body = document.querySelector('body');
+const p = document.createElement('p');
+body.appendChild(p);
 
 //createStudentList() generates a number of list items using the student information stored in data.js.
 //The number of list items generated depends on both the pageSize and the number of students in data[]
@@ -67,7 +71,7 @@ function createPaginationButtons (list) {
    let linkList = document.querySelector('.link-list');
    linkList.innerHTML = "";
    
-   if(linkList.length > 0){
+   if (list.length > 0) {
       //dynamically creates the number of pagination buttons required per # of students and pageSize
       for (i = 0; i < numberOfButtons; i++) {
          let li = document.createElement('li');
@@ -98,6 +102,8 @@ function createPaginationButtons (list) {
    };
 }
 
+//createSearchBar creates a search bar element on the page
+
 function createSearchBar () {
    const h2 = document.querySelector('h2');
  
@@ -109,9 +115,14 @@ function createSearchBar () {
    h2.insertAdjacentHTML('afterend',searchBarHTML);
 }
 
+//performsearch() references user input against a provided array of student data to return matches based on student name only
+//@param searchInput -- string value entered into on-screen search box
+//@param studentInfo -- array of available student data
+
 function performSearch(searchInput, studentInfo) {
    const searchTerm = searchInput.toLowerCase();
    let searchResults = [];
+   p.textContent = '';
 
    for (let i=0;i<studentInfo.length; i++) {
       const firstName = studentInfo[i].name.first;
@@ -122,15 +133,12 @@ function performSearch(searchInput, studentInfo) {
          searchResults.push(studentInfo[i]);
       };
    };
-
+   
    createStudentList(searchResults,1);
    createPaginationButtons(searchResults);
-
-   if (searchResults.length === 0){
-      let body = document.querySelector('body');
-      let p = document.createElement('p');
+   
+   if (searchResults.length === 0) {
       p.textContent = 'Sorry, no results!';
-      body.appendChild(p);
    };
 }
 
@@ -141,7 +149,12 @@ createSearchBar();
 
 //Set up eventListener for search bar
 const searchBox = document.getElementById("search");
+const searchBoxButton = document.querySelector('button');
 
 searchBox.addEventListener('keyup', ()=> {
-      performSearch(searchBox.value,data);
+   performSearch(searchBox.value,data);  
+});
+
+searchBoxButton.addEventListener('click', ()=> {
+   performSearch(searchBox.value,data);
 });
