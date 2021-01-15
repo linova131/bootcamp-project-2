@@ -17,6 +17,12 @@ body.appendChild(p);
 // @param page -- which group of students should be displayed e.g. on page 2, students 10-18 should appear
 
 function createStudentList (list, page) {
+   function createElement(elementName, property, value){
+      const element = document.createElement(elementName);
+      element[property] = value;
+      return element;
+   };
+   
    let studentData = list;
    const startIndex = (page*pageSize)-pageSize;
    const endIndex = (page*pageSize);
@@ -28,35 +34,29 @@ function createStudentList (list, page) {
       //This if statement ensures that list items are only generated when student data exists.
       //Prevents function for attempting to fill the pageSize when the number of students does not allow for the full pageSize
       if (list[i]) {
-         let li = document.createElement('li');
-         li.className = 'student-item cf';
+ 
+         const li = createElement('li','className', 'student-item cf');
          studentList.appendChild(li);
 
-         let studentDiv = document.createElement('div');
-         studentDiv.className = 'student-details';
+         const studentDiv = createElement('div','className','student-details');
          li.appendChild(studentDiv);
 
-         let studentImage = document.createElement('img');
-         studentImage.className = 'avatar';
+         const studentImage = createElement('img','className','avatar');
          let pictureURL = studentData[i].picture.medium;
          studentImage.src = pictureURL;
          studentDiv.appendChild(studentImage);
-
-         let studentName = document.createElement('h3');
-         studentName.textContent = `${studentData[i].name.first} ${studentData[i].name.last}`;
+         
+         const studentName = createElement('h3','textContent',`${studentData[i].name.first} ${studentData[i].name.last}`);
          studentDiv.appendChild(studentName);
 
-         let studentEmail = document.createElement('span');
-         studentEmail.className = 'email';
+         const studentEmail = createElement('span','className','email');
          studentEmail.textContent = `${studentData[i].email}`;
          studentDiv.appendChild(studentEmail);
 
-         let joinedDiv = document.createElement('div');
-         joinedDiv.className = 'joined-details';
+         const joinedDiv = createElement('div','className','joined-details');
          li.appendChild(joinedDiv);
 
-         let joinedDate = document.createElement('span');
-         joinedDate.className = 'date';
+         const joinedDate = createElement('span','className','date');
          joinedDate.textContent = `Joined ${studentData[i].registered.date}`;
          joinedDiv.appendChild(joinedDate);
       };  
